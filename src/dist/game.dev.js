@@ -11,6 +11,8 @@ var _brick = _interopRequireDefault(require("./brick.js"));
 
 var _bulletController = _interopRequireDefault(require("./bulletController.js"));
 
+var _enemy = _interopRequireDefault(require("./enemy.js"));
+
 var _inputHandler = _interopRequireDefault(require("./inputHandler.js"));
 
 var _paddle = _interopRequireDefault(require("./paddle.js"));
@@ -41,6 +43,7 @@ function () {
       this.bulletController1 = new _bulletController["default"]();
       this.paddle = new _paddle["default"](this, 10, this.inputHandler1, this.bulletController1);
       var bricks = [];
+      var enemies = [];
 
       for (var i = 0; i < 7; i++) {
         var brick = new _brick["default"](this, {

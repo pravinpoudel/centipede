@@ -9,7 +9,8 @@ export default class BulletController {
 
   shoot(x, y, speed, damage, delay) {
     if (this.timerTillNextBullet <= 0) {
-      this.bullets.push(new Bullet(x, y, speed, damage));
+      const bulletNew = new Bullet(x, y, speed, damage);
+      this.bullets.push(bulletNew);
       this.timerTillNextBullet = delay;
     }
     this.timerTillNextBullet--;
@@ -24,6 +25,16 @@ export default class BulletController {
     );
   }
 
+  collideWith(sprite){  
+    this.bullets.some((bullet, index)=>{
+      if(bullet.collideWith(sprite)){
+        this.bullets.splice(index, 1);
+        return true;
+      }
+      return false;
+    })
+
+  }
   update(deltaTime) {
     this.bullets.forEach((bullet) => {
       bullet.update();
@@ -31,7 +42,7 @@ export default class BulletController {
   }
 
   draw(context) {
-    console.log(this.bullets.length);
+    // console.log(this.bullets.length);
     this.bullets.forEach((bullet, index) => {
       if (this.isBulletOffScreen(bullet)) {
         this.bullets.splice(index, 1);

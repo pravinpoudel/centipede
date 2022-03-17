@@ -34,8 +34,11 @@ export default class InputHandler {
 
   update(timeStamp) {
     for (const key in this.keys) {
-      console.log(key);
-      this.handlers[key](timeStamp);
+      if ((this, this.handlers[key])) this.handlers[key](timeStamp);
+      else {
+        console.log("press space to shoot");
+        console.warn("we only support WASD and key up-down-right-left");
+      }
     }
   }
 }

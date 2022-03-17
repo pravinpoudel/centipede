@@ -54,8 +54,10 @@ function () {
     key: "update",
     value: function update(timeStamp) {
       for (var key in this.keys) {
-        console.log(key);
-        this.handlers[key](timeStamp);
+        if (this, this.handlers[key]) this.handlers[key](timeStamp);else {
+          console.log("press space to shoot");
+          console.warn("we only support WASD and key up-down-right-left");
+        }
       }
     }
   }]);

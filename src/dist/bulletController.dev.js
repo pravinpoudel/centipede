@@ -30,7 +30,8 @@ function () {
     key: "shoot",
     value: function shoot(x, y, speed, damage, delay) {
       if (this.timerTillNextBullet <= 0) {
-        this.bullets.push(new _bullet["default"](x, y, speed, damage));
+        var bulletNew = new _bullet["default"](x, y, speed, damage);
+        this.bullets.push(bulletNew);
         this.timerTillNextBullet = delay;
       }
 
@@ -42,6 +43,21 @@ function () {
       return bullet.x <= -bullet.width || bullet.x > 800 || bullet.y > 800 || bullet.y <= -bullet.height;
     }
   }, {
+    key: "collideWith",
+    value: function collideWith(sprite) {
+      var _this = this;
+
+      this.bullets.some(function (bullet, index) {
+        if (bullet.collideWith(sprite)) {
+          _this.bullets.splice(index, 1);
+
+          return true;
+        }
+
+        return false;
+      });
+    }
+  }, {
     key: "update",
     value: function update(deltaTime) {
       this.bullets.forEach(function (bullet) {
@@ -51,12 +67,12 @@ function () {
   }, {
     key: "draw",
     value: function draw(context) {
-      var _this = this;
+      var _this2 = this;
 
-      console.log(this.bullets.length);
+      // console.log(this.bullets.length);
       this.bullets.forEach(function (bullet, index) {
-        if (_this.isBulletOffScreen(bullet)) {
-          _this.bullets.splice(index, 1);
+        if (_this2.isBulletOffScreen(bullet)) {
+          _this2.bullets.splice(index, 1);
 
           return;
         }
