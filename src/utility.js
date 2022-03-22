@@ -10,3 +10,13 @@ function doesIntersect(object1Min, object1Max, value) {
     object1Max.y > value.y;
   return !isInside;
 }
+
+function loadSound(source, id) {
+  let sound1 = new Audio();
+  sound1.src = source;
+  return sound1;
+}
+const sounds = {};
+sounds["shoot"] = loadSound("audio/sound-1.mp3");
+sounds["shoot"].play();
+

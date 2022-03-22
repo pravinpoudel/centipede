@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&family=Lato&family=Roboto+Condensed&family=Roboto:ital,wght@0,500;0,700;1,400&family=Wallpoet&display=swap');
+
+body{
+    font-family: 'Roboto', sans-serif;
+    color: white;
+
+}
+
 #gameScreen{
     border: 1px solid black;
     background-color: black;
@@ -5,4 +13,75 @@
 
 img{
     display: none;
+}
+
+.wrapper{
+    vertical-align: center;
+    justify-content: center;
+    width: 800px;
+    height: 800px;
+    position: absolute;
+    background-color: black;
+}
+
+.button_body{
+    display: flex;
+    padding: 20px;
+    justify-content: space-evenly;
+}
+
+#highScoreBoard{
+    text-align: center;
+    font-size: 40px;
+    color: white;
+}
+
+.customControl{
+    display: none;
+    position: absolute;
+    background-color: black;
+    width: 800px;
+    height: 800px;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    padding: 20px;
+    /* left: 10%;
+    top: 15%; */
+}
+
+#customControl1{
+    display: none;
+    position: absolute;
+    background-color: black;
+    width: 800px;
+    height: 800px;
+    top: 0px;
+    left: 0px;
+    padding: 20px;
+    position: absolute;
+}
+
+.current-score{
+    position: absolute;
+    left: 40%;
+    top: 7%;
+    /* font-size: 40px; */
+    /* font-weight: bold; */
+    padding: 20px;
+    /* color: black; */
+}
+
+#credit{
+    position: absolute;
+    top: 0;
+    padding: 50px;
+    width: 800px;
+    height: 800px;
+    display: none;
+    background-color: black;
+}
+
+.key_button{
+    padding: 20px;
 }

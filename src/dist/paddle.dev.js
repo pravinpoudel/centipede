@@ -14,7 +14,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Paddle =
 /*#__PURE__*/
 function () {
-  function Paddle(game, padding, inputHandler, bulletController) {
+  function Paddle(game, padding, inputHandler, bulletController, topCode, downCode, rightCode, leftCode) {
     _classCallCheck(this, Paddle);
 
     this.width = 50;
@@ -31,11 +31,18 @@ function () {
       x: 200,
       y: 200
     };
+    this.topCode = topCode;
+    this.downCode = downCode;
+    this.leftCode = leftCode;
+    this.rightCode = rightCode;
     this.spriteGunImage = new Image();
     this.spriteGunImage2 = new Image();
     this.spriteGunImage.src = "./assets/gun1.png";
     this.spriteGunImage2.src = "./assets/gun2.png";
+    this.sound1 = new Audio();
+    this.sound1.src = "./assets/audio/gun_shoot.flac";
     this.maxSpeed = 40;
+    localStorage.setItem("currentScore", 0);
     this.moveRight = this.moveRight.bind(this);
     this.moveLeft = this.moveLeft.bind(this);
     this.moveTop = this.moveTop.bind(this);
@@ -44,18 +51,17 @@ function () {
     this.shoot = this.shoot.bind(this);
     this.animateGun = this.animateGun.bind(this);
     this.animationGun2 = this.animationGun2.bind(this);
-    this.inputHandler.addCommandHandler(37, this.moveLeft);
-    this.inputHandler.addCommandHandler(39, this.moveRight);
-    this.inputHandler.addCommandHandler(38, this.moveTop);
-    this.inputHandler.addCommandHandler(40, this.moveDown);
+    this.inputHandler.addCommandHandler(this.leftCode, this.moveLeft);
+    this.inputHandler.addCommandHandler(this.rightCode, this.moveRight);
+    this.inputHandler.addCommandHandler(this.topCode, this.moveTop);
+    this.inputHandler.addCommandHandler(this.downCode, this.moveDown);
     this.inputHandler.addCommandHandler(32, this.moveStop);
   }
 
   _createClass(Paddle, [{
     key: "moveLeft",
     value: function moveLeft(deltaTime) {
-      console.log(deltaTime); // this.cSpeed.x = -this.maxSpeed;
-
+      // this.cSpeed.x = -this.maxSpeed;
       this.position.x -= this.cSpeed.x * 0.001 * deltaTime; // this.cSpeed.y = 0;
     }
   }, {
@@ -83,9 +89,16 @@ function () {
       // this.cSpeed.y = 0;
     }
   }, {
+    key: "collideWith",
+    value: function collideWith(sprite) {
+      var isColliding = this.position.x < sprite.x + sprite.width && this.position.x + this.width > sprite.x && this.position.y < sprite.y + sprite.width && this.position.y + this.height > sprite.y;
+      return isColliding;
+    }
+  }, {
     key: "shoot",
     value: function shoot() {
       this.animationGun2();
+      this.sound1.play();
       var speed = 5;
       var delay = 5;
       var damage = 1;

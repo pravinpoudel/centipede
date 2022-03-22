@@ -31,12 +31,18 @@ function () {
   _createClass(InputHandler, [{
     key: "addKey",
     value: function addKey(e) {
-      this.keys[e.keyCode] = true;
+      if (e.keyCode != 32) this.keys[e.key] = true;else if (e.keyCode == 32) {
+        this.keys[e.keyCode] = true;
+      }
     }
   }, {
     key: "removeKey",
     value: function removeKey(e) {
-      delete this.keys[e.keyCode];
+      if (e.keyCode != 32) {
+        delete this.keys[e.key];
+      } else if (e.keyCode == 32) {
+        delete this.keys[e.keyCode];
+      }
     }
   }, {
     key: "clearKey",
@@ -46,17 +52,16 @@ function () {
     }
   }, {
     key: "addCommandHandler",
-    value: function addCommandHandler(keyCode, method) {
-      console.log(keyCode, method);
-      this.handlers[keyCode] = method;
+    value: function addCommandHandler(key, method) {
+      console.log(key, method);
+      this.handlers[key] = method;
     }
   }, {
     key: "update",
     value: function update(timeStamp) {
       for (var key in this.keys) {
-        if (this, this.handlers[key]) this.handlers[key](timeStamp);else {
-          console.log("press space to shoot");
-          console.warn("we only support WASD and key up-down-right-left");
+        if (this, this.handlers[key]) this.handlers[key](timeStamp);else {// console.log("press space to shoot");
+          // console.warn("we only support WASD and key up-down-right-left");
         }
       }
     }

@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _enemy = _interopRequireDefault(require("./enemy.js"));
 
+var _flea = _interopRequireDefault(require("./flea.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18,11 +20,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var EnemyController =
 /*#__PURE__*/
 function () {
-  function EnemyController(bulletController) {
+  function EnemyController(bulletController, player) {
     _classCallCheck(this, EnemyController);
 
     this.enemies = [];
+    this.player = player;
     this.bulletController = bulletController;
+    this.mushroomSound = new Audio();
+    this.spiderSound = new Audio();
+    this.gameFinish = new Audio();
+    this.mushroomSound.src = "./assets/audio/mushroomAudio.flac";
+    this.spiderSound.src = "./assets/audio/spiderAudio.flac";
+    this.gameFinish.src = "./assets/audio/game_end.mp3";
   }
 
   _createClass(EnemyController, [{
@@ -32,24 +41,63 @@ function () {
       this.enemies.push(enemy);
     }
   }, {
+    key: "createFlea",
+    value: function createFlea(x, y, health) {
+      var enemy = new _flea["default"](x, y, health, this);
+      this.enemies.push(enemy);
+    }
+  }, {
+    key: "storeScore",
+    value: function storeScore() {
+      var highScoreList = localStorage.getItem("highScores");
+      highScoreList = JSON.parse(highScoreList);
+      var currentScore = parseInt(localStorage.getItem("currentScore"));
+      highScoreList[highScoreList.length] = currentScore;
+      highScoreList.sort(function (a, b) {
+        return b - a;
+      });
+      console.log(highScoreList);
+      highScoreList = highScoreList.slice(0, 5);
+      console.log(highScoreList);
+      highScoreList = JSON.stringify(highScoreList);
+      console.log(highScoreList);
+      localStorage.setItem("highScores", highScoreList);
+      console.log(localStorage.getItem("highScores"));
+      this.gameFinish.play();
+    }
+  }, {
     key: "update",
-    value: function update(deltaTime) {
+    value: function update(deltaTime, gameOver) {
       var _this = this;
 
       this.enemies.forEach(function (enemy, index) {
-        if (enemy.health <= 0 || enemy.y > 800 - enemy.height) {
+        if (enemy.health <= 0) {
           _this.enemies.splice(index, 1);
 
           return;
         }
 
         if (_this.bulletController.collideWith(enemy)) {
+          if (enemy.falling) {
+            _this.spiderSound.play();
+          } else {
+            _this.mushroomSound.play();
+          }
+
           if (enemy.health <= 1) {
             _this.enemies.splice(index, 1);
           }
-        } else {
-          enemy.update(deltaTime);
         }
+
+        if (enemy.falling) {
+          if (_this.player.collideWith(enemy) || enemy.y > 800 - enemy.height) {
+            gameOver();
+
+            _this.storeScore();
+          }
+        }
+
+        enemy.update(deltaTime);
       });
     }
   }, {

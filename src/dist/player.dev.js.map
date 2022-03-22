@@ -1,0 +1,1 @@
+{"version":3,"sources":["player.js"],"names":["Player","sprite","gameObject"],"mappings":";;;;;;;;;IAAqBA,M,GACnB,gBAAYC,MAAZ,EAAoBC,UAApB,EAAgC;AAAA;AAAE,C","sourcesContent":["export default class Player {\r\n  constructor(sprite, gameObject) {}\r\n}\r\n"],"file":"player.dev.js"}

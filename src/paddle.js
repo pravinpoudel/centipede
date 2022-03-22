@@ -1,5 +1,14 @@
 export default class Paddle {
-  constructor(game, padding, inputHandler, bulletController) {
+  constructor(
+    game,
+    padding,
+    inputHandler,
+    bulletController,
+    topCode,
+    downCode,
+    rightCode,
+    leftCode
+  ) {
     this.width = 50;
     this.height = 50;
     this.padding = 10;
@@ -16,13 +25,23 @@ export default class Paddle {
       y: 200,
     };
 
+    this.topCode = topCode;
+    this.downCode = downCode;
+    this.leftCode = leftCode;
+    this.rightCode = rightCode;
+
     this.spriteGunImage = new Image();
     this.spriteGunImage2 = new Image();
 
     this.spriteGunImage.src = "./assets/gun1.png";
     this.spriteGunImage2.src = "./assets/gun2.png";
 
+    this.sound1 = new Audio();
+    this.sound1.src = "./assets/audio/gun_shoot.flac";
+
     this.maxSpeed = 40;
+
+    localStorage.setItem("currentScore", 0);
 
     this.moveRight = this.moveRight.bind(this);
     this.moveLeft = this.moveLeft.bind(this);
@@ -33,17 +52,16 @@ export default class Paddle {
     this.animateGun = this.animateGun.bind(this);
     this.animationGun2 = this.animationGun2.bind(this);
 
-    this.inputHandler.addCommandHandler(37, this.moveLeft);
-    this.inputHandler.addCommandHandler(39, this.moveRight);
-    this.inputHandler.addCommandHandler(38, this.moveTop);
-    this.inputHandler.addCommandHandler(40, this.moveDown);
+    this.inputHandler.addCommandHandler(this.leftCode, this.moveLeft);
+    this.inputHandler.addCommandHandler(this.rightCode, this.moveRight);
+    this.inputHandler.addCommandHandler(this.topCode, this.moveTop);
+    this.inputHandler.addCommandHandler(this.downCode, this.moveDown);
     this.inputHandler.addCommandHandler(32, this.moveStop);
   }
 
   moveLeft(deltaTime) {
-    console.log(deltaTime)
     // this.cSpeed.x = -this.maxSpeed;
-    this.position.x -= this.cSpeed.x * 0.001* deltaTime;
+    this.position.x -= this.cSpeed.x * 0.001 * deltaTime;
     // this.cSpeed.y = 0;
   }
   moveRight(deltaTime) {
@@ -59,7 +77,7 @@ export default class Paddle {
 
   moveDown(deltaTime) {
     // this.cSpeed.y = this.maxSpeed;
-    this.position.y += this.cSpeed.y * 0.001* deltaTime;
+    this.position.y += this.cSpeed.y * 0.001 * deltaTime;
     // this.cSpeed.x = 0;
   }
 
@@ -69,8 +87,18 @@ export default class Paddle {
     // this.cSpeed.y = 0;
   }
 
+  collideWith(sprite) {
+    let isColliding =
+      this.position.x < sprite.x + sprite.width &&
+      this.position.x + this.width > sprite.x &&
+      this.position.y < sprite.y + sprite.width &&
+      this.position.y + this.height > sprite.y;
+    return isColliding;
+  }
+
   shoot() {
     this.animationGun2();
+    this.sound1.play();
     const speed = 5;
     const delay = 5;
     const damage = 1;
@@ -80,13 +108,25 @@ export default class Paddle {
     // this.animateGun();
   }
 
-  animateGun(){
-    console.log(this.context)
-    this.context.drawImage(this.spriteGunImage, this.position.x, this.position.y, this.width, this.height);
+  animateGun() {
+    console.log(this.context);
+    this.context.drawImage(
+      this.spriteGunImage,
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
   }
 
-  animationGun2(){
-    this.context.drawImage(this.spriteGunImage2, this.position.x, this.position.y, this.width, this.height );
+  animationGun2() {
+    this.context.drawImage(
+      this.spriteGunImage2,
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
   }
 
   draw(context) {

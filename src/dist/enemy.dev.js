@@ -30,18 +30,31 @@ function () {
     this.frameHeight = 80;
     this.falling = falling;
     this.count = 0;
+    this.cspeedX = 100;
 
     if (type == "spidey") {
       this.frameWidth = 168;
       this.frameHeight = 80;
       this.enemyImage.src = "./assets/spidey.png";
+    }
+
+    if (type == "flea") {
+      this.frameWidth = 168;
+      this.frameHeight = 80;
+      this.enemyImage.src = "./assets/flea.png";
+    }
+
+    if (type == "scorpion") {
+      this.frameWidth = 168;
+      this.frameHeight = 80;
+      this.enemyImage.src = "./assets/scorpion.png";
     } else {
-      this.falling = false;
       this.enemyImage.src = "./assets/mushroom1.png";
     }
 
     this.index = 0;
     this.type = type;
+    this.drawSprite = this.drawSprite.bind(this);
   }
 
   _createClass(Enemy, [{
@@ -55,6 +68,11 @@ function () {
       // this.x += 200 * (2 * Math.random() - 1) * 0.001 * timeStamp;
       if (this.falling) {
         this.y += 100 * 0.001 * timeStamp;
+      }
+
+      if (this.type == "spider") {
+        cspeedX = this.x < 0 || this.x > 800 - this.width ? -1 * cspeedX : cspeedX;
+        this.x += cspeeedX * 0.001 * timeStamp;
       }
 
       if (this.x < 0 || this.x > 800 - this.width) {
@@ -86,7 +104,10 @@ function () {
       context.filLStyle = this.color;
 
       if (this.health > 1) {
-        this.index = 4 - this.health;
+        if (this.type == "mushroom") {
+          this.index = 4 - this.health;
+        }
+
         this.drawSprite();
       } else {
         console.log("mushroom is not here, correct your code");

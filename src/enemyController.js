@@ -1,9 +1,16 @@
 import Enemy from "./enemy.js";
-
+import Flea from "./flea.js";
 export default class EnemyController {
-  constructor(bulletController) {
+  constructor(bulletController, player) {
     this.enemies = [];
+    this.player = player;
     this.bulletController = bulletController;
+    this.mushroomSound = new Audio();
+    this.spiderSound = new Audio();
+    this.gameFinish = new Audio();
+    this.mushroomSound.src = "./assets/audio/mushroomAudio.flac";
+    this.spiderSound.src = "./assets/audio/spiderAudio.flac";
+    this.gameFinish.src = "./assets/audio/game_end.mp3";
   }
 
   createEnemy(x, y, falling, color, health, type) {
@@ -11,19 +18,53 @@ export default class EnemyController {
     this.enemies.push(enemy);
   }
 
-  update(deltaTime) {
+  createFlea(x, y, health) {
+    let enemy = new Flea(x, y, health, this);
+    this.enemies.push(enemy);
+  }
+
+  storeScore() {
+    let highScoreList = localStorage.getItem("highScores");
+    highScoreList = JSON.parse(highScoreList);
+    let currentScore = parseInt(localStorage.getItem("currentScore"));
+    highScoreList[highScoreList.length] = currentScore;
+    highScoreList.sort(function (a, b) {
+      return b - a;
+    });
+    console.log(highScoreList);
+    highScoreList = highScoreList.slice(0, 5);
+    console.log(highScoreList);
+    highScoreList = JSON.stringify(highScoreList);
+    console.log(highScoreList);
+    localStorage.setItem("highScores", highScoreList);
+    console.log(localStorage.getItem("highScores"));
+    this.gameFinish.play();
+  }
+
+  update(deltaTime, gameOver) {
     this.enemies.forEach((enemy, index) => {
-      if (enemy.health <= 0 || enemy.y > 800 - enemy.height) {
+      if (enemy.health <= 0) {
         this.enemies.splice(index, 1);
         return;
       }
       if (this.bulletController.collideWith(enemy)) {
+        if (enemy.falling) {
+          this.spiderSound.play();
+        } else {
+          this.mushroomSound.play();
+        }
         if (enemy.health <= 1) {
           this.enemies.splice(index, 1);
         }
-      } else {
-        enemy.update(deltaTime);
       }
+
+      if (enemy.falling) {
+        if (this.player.collideWith(enemy) || enemy.y > 800 - enemy.height) {
+          gameOver();
+          this.storeScore();
+        }
+      }
+      enemy.update(deltaTime);
     });
   }
 

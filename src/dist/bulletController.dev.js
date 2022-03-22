@@ -47,8 +47,12 @@ function () {
     value: function collideWith(sprite) {
       var _this = this;
 
-      this.bullets.some(function (bullet, index) {
+      return this.bullets.some(function (bullet, index) {
         if (bullet.collideWith(sprite)) {
+          var currentScore = parseInt(localStorage.getItem("currentScore"));
+          localStorage.setItem("currentScore", ++currentScore);
+          console.log(localStorage.getItem("currentScore"));
+
           _this.bullets.splice(index, 1);
 
           return true;

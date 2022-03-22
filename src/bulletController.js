@@ -26,14 +26,16 @@ export default class BulletController {
   }
 
   collideWith(sprite){  
-    this.bullets.some((bullet, index)=>{
-      if(bullet.collideWith(sprite)){
-        this.bullets.splice(index, 1);
-        return true;
-      }
-      return false;
-    })
-
+   return this.bullets.some((bullet, index) => {
+     if (bullet.collideWith(sprite)) {
+       let currentScore = parseInt(localStorage.getItem("currentScore"));
+       localStorage.setItem("currentScore", ++currentScore);
+       console.log(localStorage.getItem("currentScore"));
+       this.bullets.splice(index, 1);
+       return true;
+     }
+     return false;
+   });
   }
   update(deltaTime) {
     this.bullets.forEach((bullet) => {
