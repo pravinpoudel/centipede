@@ -32,6 +32,7 @@ if (!localStorage.getItem("highScores")) {
 
 function restartGame() {
   game = new _game["default"](GAME_WIDTH, GAME_HEIGHT);
+  console.log(game);
   game.start(game, topCode, downCode, rightCode, leftCode, 5, 0);
   document.getElementById("menu").style.display = "none";
   requestAnimationFrame(update);
@@ -63,11 +64,10 @@ window.addEventListener("keydown", function (event) {
     } // activeButton = null;
 
   }
-});
-document.getElementById("customControl").addEventListener("focusout", function (e) {
-  console.log("blurred");
-  activeButton = null;
-});
+}); // document.getElementById("customControl").addEventListener("focusout", (e) => {
+//   console.log("blurred");
+//   activeButton = null;
+// });
 
 function restartForm() {
   document.getElementById("top_button").innerText = topCode;

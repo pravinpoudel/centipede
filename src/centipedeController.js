@@ -22,12 +22,10 @@ export default class CentipedeController {
   }
 
   move() {
-    // console.log(JSON.stringify(this.tails));
     for (let i = 1; i < this.total; i++) {
       this.tails[i - 1].x = this.tails[i].x;
       this.tails[i - 1].y = this.tails[i].y;
     }
-    // console.log(JSON.stringify(this.tails));
   }
 
   update(timeStamp) {

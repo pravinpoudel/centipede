@@ -46,12 +46,10 @@ function () {
   }, {
     key: "move",
     value: function move() {
-      // console.log(JSON.stringify(this.tails));
       for (var i = 1; i < this.total; i++) {
         this.tails[i - 1].x = this.tails[i].x;
         this.tails[i - 1].y = this.tails[i].y;
-      } // console.log(JSON.stringify(this.tails));
-
+      }
     }
   }, {
     key: "update",

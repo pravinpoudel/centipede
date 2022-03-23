@@ -60,7 +60,7 @@ export default class Game {
     );
 
     let centipedeController1 = new CentipedeController(10, 0, 50, 50);
-    centipedeController1.createCentipede(4);
+    centipedeController1.createCentipede(1);
 
     // let bricks = [];
     // for (let i = 0; i < 7; i++) {
@@ -74,15 +74,15 @@ export default class Game {
     );
 
     this.enemeyController1.createEnemy(50, 20, false, "green", 4, "mushroom");
-    this.enemeyController1.createEnemy(200, 20, true, "white", 4, "spidey");
+    this.enemeyController1.createEnemy(200, 420, true, "white", 4, "spidey");
     this.enemeyController1.createFlea(350, 20, 4);
     this.enemeyController1.createEnemy(500, 20, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(650, 20, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(750, 20, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(600, 20, false, "green", 4, "scorpio");
-    this.enemeyController1.createEnemy(120, 120, true, "green", 4, "spidey");
-    this.enemeyController1.createEnemy(290, 120, true, "green", 4, "spidey");
-    this.enemeyController1.createEnemy(0, 120, true, "green", 4, "spidey");
+    this.enemeyController1.createEnemy(120, 320, true, "green", 4, "spidey");
+    this.enemeyController1.createEnemy(290, 620, true, "green", 4, "spidey");
+    this.enemeyController1.createEnemy(0, 520, true, "green", 4, "spidey");
     this.enemeyController1.createEnemy(0, 190, true, "green", 4, "scorpion");
     this.enemeyController1.createEnemy(550, 250, true, "green", 4, "scorpion");
     this.enemeyController1.createEnemy(40, 400, true, "green", 4, "scorpion");
@@ -114,6 +114,15 @@ export default class Game {
     if (this.player.life <= 0) {
       this.gameOver = true;
       document.getElementById("game_end_msg").style.display = "block";
+      let list = document.getElementById("myScores");
+      let highScores = JSON.parse(localStorage.getItem("highScores"));
+      highScores.forEach((value)=>{
+        let li = document.createElement("li");
+        li.innerText = value;
+        list.appendChild(li);
+      });
+      console.log(highScores)
+      // document.getElementById("").innerHTML = localStorage.getItem();
       this.enemeyController1.gameFinish.play();
     } else {
       let prevScore = localStorage.getItem("currentScore");

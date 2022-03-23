@@ -5,8 +5,8 @@ export default class Enemy {
     this.color = color;
     this.health = health;
     this.context = null;
-    this.width = 12;
-    this.height = 12;
+    this.width = 15;
+    this.height = 15;
     this.enemyImage = new Image();
     this.frameWidthPlusOffset = 90;
     this.frameWidth = 8;
@@ -22,18 +22,21 @@ export default class Enemy {
       this.frameWidth = 16;
       this.frameHeight = 8;
       this.enemyImage.src = "./assets/spider.png";
+      this.maxIndex = 3;
     }
 
     if (type == "flea") {
       this.frameWidth = 168;
       this.frameHeight = 80;
       this.enemyImage.src = "./assets/flea.png";
+      this.maxIndex = 1;
     }
 
     if (type == "scorpion") {
       this.frameWidth = 16;
       this.frameHeight = 8;
       this.enemyImage.src = "./assets/scorpion.png";
+      this.maxIndex = 3;
     }
     
     this.index = 0;
@@ -54,7 +57,10 @@ export default class Enemy {
     
     if(this.type== "spidey"){
       this.cspeedX = this.x < 0 || this.x > 800 - this.width? (-1 * this.cspeedX): this.cspeedX;
-      this.cspeedY = this.y < 0 || this.y > 770 - this.height? (-1 * this.cspeedY): this.cspeedY;
+      this.cspeedY =
+        this.y < 200 || this.y > 770 - this.height
+          ? -1 * this.cspeedY
+          : this.cspeedY;
       this.x += this.cspeedX * 0.001 * timeStamp;
       this.y += this.cspeedY * 0.001 * timeStamp;
       // if (this.x < 0 || this.x > 800 - this.width) {
@@ -83,7 +89,7 @@ export default class Enemy {
         this.index++;
         this.count = 0;
       }
-      if (this.index > 4) {
+      if (this.index > this.maxIndex) {
         this.index = 0;
       }
     }

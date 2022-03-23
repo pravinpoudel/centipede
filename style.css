@@ -94,3 +94,8 @@ img{
 .key_button{
     padding: 20px;
 }
+#myScores{
+    text-align: center;
+    list-style-type: none;
+    padding: 50px;
+}

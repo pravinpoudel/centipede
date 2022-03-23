@@ -1,10 +1,21 @@
 "use strict";
 
 function viewHighScore() {
-  var highScore = localStorage.getItem("HighScore");
+  var highScore = localStorage.getItem("highScores");
 
-  if (highScore < 0 || !highScore) {
+  if (!highScore) {
     highScore = 0;
+  } else {
+    var scoreArray = JSON.parse(localStorage.getItem("highScores"));
+    highScore = scoreArray[0];
+    var list = document.getElementById("myScores");
+    var highScores = JSON.parse(localStorage.getItem("highScores"));
+    highScores.forEach(function (value) {
+      var li = document.createElement("li");
+      li.innerText = value;
+      list.appendChild(li);
+    });
+    console.log(highScore);
   }
 
   document.getElementById("customControl1").style.display = "block";
