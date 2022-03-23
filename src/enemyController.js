@@ -38,15 +38,16 @@ export default class EnemyController {
     console.log(highScoreList);
     localStorage.setItem("highScores", highScoreList);
     console.log(localStorage.getItem("highScores"));
-    this.gameFinish.play();
+    
   }
 
   update(deltaTime, gameOver) {
     this.enemies.forEach((enemy, index) => {
-      if (enemy.health <= 0) {
+      if (enemy.health <= 0 || enemy.y > 800 - enemy.height) {
         this.enemies.splice(index, 1);
         return;
       }
+
       if (this.bulletController.collideWith(enemy)) {
         if (enemy.falling) {
           this.spiderSound.play();
@@ -58,11 +59,21 @@ export default class EnemyController {
         }
       }
 
-      if (enemy.falling) {
-        if (this.player.collideWith(enemy) || enemy.y > 800 - enemy.height) {
-          gameOver();
-          this.storeScore();
-        }
+      if (enemy.type == "scorpio" && enemy.x > 800 - enemy.width) {
+        this.enemies.splice(index, 1);
+      }
+
+      if (enemy.type == "flea") {
+        console.log(this.player.collideWith(enemy));
+      }
+      // if (this.player.collideWith(enemy) || enemy.y > 800 - enemy.height) {
+      //   gameOver();
+      //   this.storeScore();
+      // }
+
+      if (this.player.collideWith(enemy)) {
+        gameOver();
+        this.storeScore();
       }
       enemy.update(deltaTime);
     });

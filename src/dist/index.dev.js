@@ -32,7 +32,7 @@ if (!localStorage.getItem("highScores")) {
 
 function restartGame() {
   game = new _game["default"](GAME_WIDTH, GAME_HEIGHT);
-  game.start(game, topCode, downCode, rightCode, leftCode);
+  game.start(game, topCode, downCode, rightCode, leftCode, 5, 0);
   document.getElementById("menu").style.display = "none";
   requestAnimationFrame(update);
 }
@@ -98,7 +98,6 @@ function update(timeStamp) {
   context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   game.update(delta);
   game.draw(context);
-  console.log(game.gameOver);
 
   if (!game.gameOver) {
     requestAnimationFrame(update);

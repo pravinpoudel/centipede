@@ -7,7 +7,10 @@ export default class Paddle {
     topCode,
     downCode,
     rightCode,
-    leftCode
+    leftCode,
+    offset,
+    life,
+    score
   ) {
     this.width = 50;
     this.height = 50;
@@ -15,6 +18,7 @@ export default class Paddle {
     this.inputHandler = inputHandler;
     this.bulletController = bulletController;
     this.context = null;
+    this.offset = offset;
     this.position = {
       x: game.GAME_WIDTH / 2 - this.width / 2,
       y: game.GAME_HEIGHT - this.height - this.padding,
@@ -40,8 +44,9 @@ export default class Paddle {
     this.sound1.src = "./assets/audio/gun_shoot.flac";
 
     this.maxSpeed = 40;
+    this.life = life;
 
-    localStorage.setItem("currentScore", 0);
+    localStorage.setItem("currentScore", score);
 
     this.moveRight = this.moveRight.bind(this);
     this.moveLeft = this.moveLeft.bind(this);
@@ -134,13 +139,22 @@ export default class Paddle {
     this.animationGun2();
     this.bulletController.draw(context);
   }
+  clamp(num, min, max) {
+    return Math.min(Math.max(num, min), max);
+  }
 
   update(deltaTime) {
     this.inputHandler.update(deltaTime);
     this.bulletController.update();
     // console.log(this.position)
-    if (this.position.x > 800 || this.position.x < 0) {
-      this.position.x = 0;
-    }
+    this.position.x = this.clamp(this.position.x, 0, 800 - this.width);
+    this.position.y = this.clamp(
+      this.position.y,
+      600,
+      800 - this.width - this.offset
+    );
+    // if (this.position.x > 800 || this.position.x < 0) {
+    //   this.position.x = 0;
+    // }
   }
 }

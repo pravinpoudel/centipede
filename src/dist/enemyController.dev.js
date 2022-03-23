@@ -63,7 +63,6 @@ function () {
       console.log(highScoreList);
       localStorage.setItem("highScores", highScoreList);
       console.log(localStorage.getItem("highScores"));
-      this.gameFinish.play();
     }
   }, {
     key: "update",
@@ -71,7 +70,7 @@ function () {
       var _this = this;
 
       this.enemies.forEach(function (enemy, index) {
-        if (enemy.health <= 0) {
+        if (enemy.health <= 0 || enemy.y > 800 - enemy.height) {
           _this.enemies.splice(index, 1);
 
           return;
@@ -89,12 +88,22 @@ function () {
           }
         }
 
-        if (enemy.falling) {
-          if (_this.player.collideWith(enemy) || enemy.y > 800 - enemy.height) {
-            gameOver();
+        if (enemy.type == "scorpio" && enemy.x > 800 - enemy.width) {
+          _this.enemies.splice(index, 1);
+        }
 
-            _this.storeScore();
-          }
+        if (enemy.type == "flea") {
+          console.log(_this.player.collideWith(enemy));
+        } // if (this.player.collideWith(enemy) || enemy.y > 800 - enemy.height) {
+        //   gameOver();
+        //   this.storeScore();
+        // }
+
+
+        if (_this.player.collideWith(enemy)) {
+          gameOver();
+
+          _this.storeScore();
         }
 
         enemy.update(deltaTime);

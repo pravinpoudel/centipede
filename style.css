@@ -45,7 +45,7 @@ img{
     top: 0px;
     left: 0px;
     position: absolute;
-    padding: 20px;
+    padding: 22%;
     /* left: 10%;
     top: 15%; */
 }
@@ -64,7 +64,7 @@ img{
 
 .current-score{
     position: absolute;
-    left: 40%;
+    /* left: 40%; */
     top: 7%;
     /* font-size: 40px; */
     /* font-weight: bold; */
@@ -75,6 +75,15 @@ img{
 #credit{
     position: absolute;
     top: 0;
+    padding: 50px;
+    width: 800px;
+    height: 800px;
+    display: none;
+    background-color: black;
+}
+#game_end_msg{
+    position: absolute;
+    top: 25%;
     padding: 50px;
     width: 800px;
     height: 800px;

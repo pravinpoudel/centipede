@@ -7,7 +7,7 @@ import Enemy from "./enemy.js";
 import EnemyController from "./enemyController.js";
 import gameObject from "./gameobject.js";
 import InputHandler from "./inputHandler.js";
-import Paddle from "./paddle.js";
+import Player from "./paddle.js";
 import Spider from "./spider.js";
 import Sprite from "./sprite.js";
 
@@ -31,11 +31,15 @@ export default class Game {
     this.end = this.end.bind(this);
   }
 
-  start(game, topCode, downCode, rightCode, leftCode) {
+  start(game, topCode, downCode, rightCode, leftCode, life, score) {
     // this.ball = new Ball(this);
     this.inputHandler1 = new InputHandler();
     this.bulletController1 = new BulletController();
-    this.paddle = new Paddle(
+    this.downCode = downCode;
+    this.topCode = topCode;
+    this.rightCode = rightCode;
+    this.leftCode = leftCode;
+    this.player = new Player(
       this,
       10,
       this.inputHandler1,
@@ -43,12 +47,16 @@ export default class Game {
       topCode,
       downCode,
       rightCode,
-      leftCode
+      leftCode,
+      20,
+      life,
+      score
     );
+    document.getElementById("lives_scoreboard").innerText = this.player.life;
 
     this.enemeyController1 = new EnemyController(
       this.bulletController1,
-      this.paddle
+      this.player
     );
 
     let centipedeController1 = new CentipedeController(10, 0, 50, 50);
@@ -71,32 +79,58 @@ export default class Game {
     this.enemeyController1.createEnemy(500, 20, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(650, 20, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(750, 20, false, "green", 4, "mushroom");
-    this.enemeyController1.createEnemy(350, 120, true, "green", 4, "spidey");
+    this.enemeyController1.createEnemy(600, 20, false, "green", 4, "scorpio");
+    this.enemeyController1.createEnemy(120, 120, true, "green", 4, "spidey");
+    this.enemeyController1.createEnemy(290, 120, true, "green", 4, "spidey");
+    this.enemeyController1.createEnemy(0, 120, true, "green", 4, "spidey");
+    this.enemeyController1.createEnemy(0, 190, true, "green", 4, "scorpion");
+    this.enemeyController1.createEnemy(550, 250, true, "green", 4, "scorpion");
+    this.enemeyController1.createEnemy(40, 400, true, "green", 4, "scorpion");
+    this.enemeyController1.createEnemy(675, 590, true, "green", 4, "scorpion");
     this.enemeyController1.createEnemy(350, 120, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(200, 320, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(350, 320, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(200, 320, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(200, 420, false, "green", 4, "mushroom");
     this.enemeyController1.createEnemy(200, 420, false, "green", 4, "mushroom");
-    this.enemeyController1.createEnemy(250, 420, false, "green", 4, "flea");
+    this.enemeyController1.createFlea(40, 60, 4);
+    this.enemeyController1.createFlea(280, 84, 4);
+    // this.enemeyController1.createEnemy(20, 40, false, "green", 4, "flea");
+    // this.enemeyController1.createEnemy(250, 420, false, "green", 4, "flea");
     console.log(this.enemeyController1.enemies);
 
     this.gameObject = [
       // this.ball,
       this.bulletController1,
-      this.paddle,
+      this.player,
       this.enemeyController1,
       centipedeController1,
     ];
   }
 
   end() {
-    this.gameOver = true;
+    this.player.life = this.player.life - 1;
+    document.getElementById("lives_scoreboard").innerText = this.player.life;
+    if (this.player.life <= 0) {
+      this.gameOver = true;
+      document.getElementById("game_end_msg").style.display = "block";
+      this.enemeyController1.gameFinish.play();
+    } else {
+      let prevScore = localStorage.getItem("currentScore");
+      this.start(
+        this,
+        this.topCode,
+        this.downCode,
+        this.rightCode,
+        this.leftCode,
+        this.player.life,
+        prevScore
+      );
+    }
   }
 
   update(deltaTime) {
     this.gameObject.forEach((element) => {
-      console.log(element);
       element.update(deltaTime, this.end);
     });
     document.getElementById("current_scoreboard").innerText =

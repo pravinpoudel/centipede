@@ -14,7 +14,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Paddle =
 /*#__PURE__*/
 function () {
-  function Paddle(game, padding, inputHandler, bulletController, topCode, downCode, rightCode, leftCode) {
+  function Paddle(game, padding, inputHandler, bulletController, topCode, downCode, rightCode, leftCode, offset, life, score) {
     _classCallCheck(this, Paddle);
 
     this.width = 50;
@@ -23,6 +23,7 @@ function () {
     this.inputHandler = inputHandler;
     this.bulletController = bulletController;
     this.context = null;
+    this.offset = offset;
     this.position = {
       x: game.GAME_WIDTH / 2 - this.width / 2,
       y: game.GAME_HEIGHT - this.height - this.padding
@@ -42,7 +43,8 @@ function () {
     this.sound1 = new Audio();
     this.sound1.src = "./assets/audio/gun_shoot.flac";
     this.maxSpeed = 40;
-    localStorage.setItem("currentScore", 0);
+    this.life = life;
+    localStorage.setItem("currentScore", score);
     this.moveRight = this.moveRight.bind(this);
     this.moveLeft = this.moveLeft.bind(this);
     this.moveTop = this.moveTop.bind(this);
@@ -125,14 +127,20 @@ function () {
       this.bulletController.draw(context);
     }
   }, {
+    key: "clamp",
+    value: function clamp(num, min, max) {
+      return Math.min(Math.max(num, min), max);
+    }
+  }, {
     key: "update",
     value: function update(deltaTime) {
       this.inputHandler.update(deltaTime);
       this.bulletController.update(); // console.log(this.position)
 
-      if (this.position.x > 800 || this.position.x < 0) {
-        this.position.x = 0;
-      }
+      this.position.x = this.clamp(this.position.x, 0, 800 - this.width);
+      this.position.y = this.clamp(this.position.y, 600, 800 - this.width - this.offset); // if (this.position.x > 800 || this.position.x < 0) {
+      //   this.position.x = 0;
+      // }
     }
   }]);
 

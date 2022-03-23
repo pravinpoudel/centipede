@@ -21,21 +21,24 @@ function () {
     this.y = y;
     this.color = color;
     this.health = health;
-    this.width = 50;
     this.context = null;
-    this.height = 50;
+    this.width = 12;
+    this.height = 12;
     this.enemyImage = new Image();
     this.frameWidthPlusOffset = 90;
-    this.frameWidth = 78;
-    this.frameHeight = 80;
+    this.frameWidth = 8;
+    this.frameHeight = 8;
     this.falling = falling;
     this.count = 0;
     this.cspeedX = 100;
+    this.cspeedY = 100;
+    this.enemyImage.src = "./assets/mushroom.png";
+    this.type = type;
 
     if (type == "spidey") {
-      this.frameWidth = 168;
-      this.frameHeight = 80;
-      this.enemyImage.src = "./assets/spidey.png";
+      this.frameWidth = 16;
+      this.frameHeight = 8;
+      this.enemyImage.src = "./assets/spider.png";
     }
 
     if (type == "flea") {
@@ -45,11 +48,9 @@ function () {
     }
 
     if (type == "scorpion") {
-      this.frameWidth = 168;
-      this.frameHeight = 80;
+      this.frameWidth = 16;
+      this.frameHeight = 8;
       this.enemyImage.src = "./assets/scorpion.png";
-    } else {
-      this.enemyImage.src = "./assets/mushroom1.png";
     }
 
     this.index = 0;
@@ -66,23 +67,23 @@ function () {
     key: "update",
     value: function update(timeStamp) {
       // this.x += 200 * (2 * Math.random() - 1) * 0.001 * timeStamp;
-      if (this.falling) {
-        this.y += 100 * 0.001 * timeStamp;
+      if (this.type == "scorpion") {
+        this.x += this.cspeedX * 0.001 * timeStamp;
       }
 
-      if (this.type == "spider") {
-        cspeedX = this.x < 0 || this.x > 800 - this.width ? -1 * cspeedX : cspeedX;
-        this.x += cspeeedX * 0.001 * timeStamp;
-      }
-
-      if (this.x < 0 || this.x > 800 - this.width) {
-        this.x = 400;
+      if (this.type == "spidey") {
+        this.cspeedX = this.x < 0 || this.x > 800 - this.width ? -1 * this.cspeedX : this.cspeedX;
+        this.cspeedY = this.y < 0 || this.y > 770 - this.height ? -1 * this.cspeedY : this.cspeedY;
+        this.x += this.cspeedX * 0.001 * timeStamp;
+        this.y += this.cspeedY * 0.001 * timeStamp; // if (this.x < 0 || this.x > 800 - this.width) {
+        //   this.x = 400;
+        // }
       }
     }
   }, {
     key: "drawSprite",
     value: function drawSprite() {
-      this.context.drawImage(this.enemyImage, this.index * this.frameWidthPlusOffset, 0, this.frameWidth, this.frameHeight, this.x, this.y, this.width, this.height);
+      this.context.drawImage(this.enemyImage, this.index * this.frameWidth, 0, this.frameWidth, this.frameHeight, this.x, this.y, this.width, this.height);
 
       if (this.type == "spidey") {
         this.count++;

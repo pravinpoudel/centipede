@@ -23,16 +23,20 @@ function () {
 
     this.x = x;
     this.y = y;
-    this.width = 50;
-    this.height = 50;
+    this.width = 20;
+    this.height = 20;
     this.health = health;
-    this.count = 0;
     this.cspeedX = 100;
     this.enemyController = enemyController;
     this.enemyImage = new Image();
-    this.enemyImage.src = "./assets/mushroom1.png";
+    this.enemyImage.src = "./assets/flea.png";
+    this.frameWidth = 12;
+    this.frameHeight = 8;
+    this.count = 0;
+    this.index = 0;
     this.speed = 100;
     this.dt = 0;
+    this.type = "flea";
   }
 
   _createClass(Flea, [{
@@ -43,7 +47,7 @@ function () {
   }, {
     key: "update",
     value: function update(timeStamp) {
-      if (Math.random() > 0.8 && this.dt > 100) {
+      if (Math.random() > 0.8 && this.dt > 100 && this.y < 700) {
         this.dt = 0;
         var mushroom = new _enemy["default"](this.x, this.y, false, "green", 4, "mushroom");
         this.enemyController.enemies.push(mushroom);
@@ -52,7 +56,6 @@ function () {
       var dt = this.speed * 0.001 * timeStamp;
       this.y += dt;
       this.dt += dt;
-      console.log(this.dt);
     }
   }, {
     key: "draw",
@@ -65,7 +68,7 @@ function () {
         this.count = 0;
       }
 
-      if (this.index > 4) {
+      if (this.index > 1) {
         this.index = 0;
       }
     }

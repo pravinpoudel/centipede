@@ -19,6 +19,11 @@
                 <button class="btn btn-primary" onclick="customizeControl()">Customize Control</button>
                 <button class="btn btn-primary" onclick="viewCredit()">View Credits</button>
             </div>
+            <div id="game_end_msg">
+                <p> start a new game press "Start New Game Button</p>
+            </div>
+
+
         <div id="customControl1">
             <h4 id="highScoreBoard"></h4>
         </div>
@@ -51,7 +56,9 @@
     </div>
     <div class="current-score">
         Score: 
-        <span id="current_scoreboard"></span>
+        <span id="current_scoreboard"></span><br>
+        Lives:
+        <span id="lives_scoreboard"></span>
     </div>
     <canvas id="gameScreen" width="800px" height="800px"></canvas>
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script> -->

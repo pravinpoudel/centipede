@@ -17,6 +17,7 @@ function customizeControl() {
 window.addEventListener("keydown", (e) => {
   if (e.key == "Escape") {
     console.log("esc pressed");
+    document.getElementById("game_end_msg").style.display = "none";
     document.getElementById("credit").style.display = "none";
     document.getElementById("customControl1").style.display = "none";
     document.getElementById("customControl").style.display = "none";
